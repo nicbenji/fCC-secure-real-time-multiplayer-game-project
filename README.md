@@ -1,6 +1,8 @@
 # Secure Real Time Multiplayer Game
 https://www.freecodecamp.org/learn/information-security/information-security-projects/secure-real-time-multiplayer-game
 
+Develop a 2D real time multiplayer game using the HTML Canvas API and Socket.io that is functionally similar to this: https://secure-real-time-multiplayer-game.freecodecamp.rocks/. 
+
 Create a secure multiplayer game in which each player can move their avatar, there is at least one collectible item, and the rank of the players is calculated based on their score.
 
 For details consult the tests below.
