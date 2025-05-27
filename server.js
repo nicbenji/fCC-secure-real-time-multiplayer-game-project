@@ -47,9 +47,21 @@ app.use(function(req, res, next) {
         .send('Not Found');
 });
 
-//Server socket
+// Server socket
+let currentUsers = 0;
 io.on('connection', (socket) => {
+    console.log('A user has connected');
+    currentUsers++;
 
+    io.emit('player', {
+        connected: true,
+        currentUsers
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User has disconnected.');
+        currentUsers--;
+    });
 });
 
 const portNum = process.env.PORT || 3000;
