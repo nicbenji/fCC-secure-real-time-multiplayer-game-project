@@ -1,19 +1,34 @@
 class Player {
-  constructor({x, y, score, id}) {
 
-  }
+    constructor({ x, y, score, id }) {
+        this.x = x;
+        this.y = y;
+        this.score = score;
+        this.id = id;
+    }
 
-  movePlayer(dir, speed) {
+    // TODO: Fix impl with proper calc of the length of movement ig
+    movePlayer(dir, speed) {
+        switch (dir) {
+            case 'left': this.x - speed;
+            case 'right': this.x + speed;
+            case 'up': this.y + speed;
+            case 'down': this.y - speed;
+            default: throw new Error('Invalid player direction');
+        }
+    }
 
-  }
+    collision(item) {
+        if (item.x === this.x && item.y === this.y) {
+            // TODO: Remove collectible from canvas
+            // Increase player score
+            return true;
+        }
+    }
 
-  collision(item) {
+    calculateRank(arr) {
 
-  }
-
-  calculateRank(arr) {
-
-  }
+    }
 }
 
 export default Player;
