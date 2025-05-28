@@ -48,24 +48,36 @@ app.use(function(req, res, next) {
 });
 
 // Server socket
-let currentUsers = 0;
+let scores = [];
 io.on('connection', (socket) => {
-    console.log('A user has connected');
-    currentUsers++;
-
+    console.log('A user has connected' + socket.id);
+    scores = scores.filter(p => p.id !== socket.id);
+    scores.push({ score: 0, id: socket.id });
     io.emit('player', {
         id: socket.id,
-        connected: true,
-        count: currentUsers
+        scores
+    });
+
+    socket.on('score', (player) => {
+        const idx = scores.findIndex((p) => p.id === player.id);
+        if (idx === -1) {
+            scores.push(player);
+        } else {
+            scores[idx] = player;
+        }
+        io.emit('scores', scores);
+        console.log(scores);
     });
 
     socket.on('disconnect', () => {
         console.log('User has disconnected.');
-        currentUsers--;
-        io.emit('player', {
+        const idx = scores.findIndex((player) => player.id === socket.id);
+        if (idx !== -1) {
+            scores.splice(idx, 1);
+        }
+        io.emit('playerLeft', {
             id: socket.id,
-            connected: false,
-            count: currentUsers
+            scores
         });
     });
 });

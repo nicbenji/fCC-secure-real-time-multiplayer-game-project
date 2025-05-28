@@ -3,7 +3,7 @@ class Player {
     constructor({ x, y, score, id }) {
         this.x = x;
         this.y = y;
-        this.score = score;
+        this.score = score ?? 0;
         this.id = id;
         this.sizeX = 30;
         this.sizeY = 30;
@@ -36,19 +36,25 @@ class Player {
     }
 
     collision(item) {
-        const isOffItem =
+        const playerisOffItem =
             this.x > item.x + item.sizeX ||
             this.x + this.sizeX < item.x ||
             this.y > item.y + item.sizeY ||
             this.y + this.sizeY < item.y;
-        if (!isOffItem) {
-            this.score += item.score;
+        if (!playerisOffItem) {
+            this.score += item.value;
             return true;
         }
     }
 
     calculateRank(arr) {
-
+        const players = arr.sort((player1, player2) => player2.score - player1.score);
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].id === this.id) {
+                return `Rank: ${i + 1}/${players.length}`
+            }
+        }
+        return `Rank: ${players.length}/${players.length}`
     }
 
     draw(context) {
