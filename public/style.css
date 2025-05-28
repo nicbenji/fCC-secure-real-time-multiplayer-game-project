@@ -1,22 +1,40 @@
 body {
-  margin: 20px;
+    margin: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 code {
-  background: #d0d0d5;
+    background: #d0d0d5;
 }
 
 canvas {
-  margin: auto;
+    margin: auto;
+    border: 5px solid #2c3eb2;
+    border-radius: 3px;
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.left-aligned {
+    text-align: left;
+    margin: 20px;
+}
+
+.right-aligned {
+    text-align: right;
+    margin: 20px;
+}
+
+.centered {
+    text-align: center;
+    margin: 20px;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 800px) {
-  .container {
-    flex-direction: row;
-  }
+    display: flex;
+    flex-direction: column;
 }

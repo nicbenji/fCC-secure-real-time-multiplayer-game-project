@@ -7,6 +7,11 @@ class Collectible {
         this.id = id;
     }
 
+    draw(context) {
+        context.fillStyle = 'gold';
+        context.fillRect(this.x, this.y, 10, 10);
+    }
+
 }
 
 /*

@@ -7,13 +7,28 @@ class Player {
         this.id = id;
     }
 
-    // TODO: Fix impl with proper calc of the length of movement ig
     movePlayer(dir, speed) {
         switch (dir) {
-            case 'left': this.x - speed;
-            case 'right': this.x + speed;
-            case 'up': this.y + speed;
-            case 'down': this.y - speed;
+            case 'left':
+                if (this.x > 0) {
+                    this.x -= speed;
+                }
+                break;
+            case 'right':
+                if (this.x < 610) {
+                    this.x += speed;
+                }
+                break;
+            case 'up':
+                if (this.y > 0) {
+                    this.y -= speed;
+                }
+                break;
+            case 'down':
+                if (this.y < 450) {
+                    this.y += speed;
+                }
+                break;
             default: throw new Error('Invalid player direction');
         }
     }
@@ -28,6 +43,11 @@ class Player {
 
     calculateRank(arr) {
 
+    }
+
+    draw(context) {
+        context.fillStyle = 'cyan';
+        context.fillRect(this.x, this.y, 30, 30);
     }
 }
 

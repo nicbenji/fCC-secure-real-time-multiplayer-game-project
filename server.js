@@ -54,13 +54,19 @@ io.on('connection', (socket) => {
     currentUsers++;
 
     io.emit('player', {
+        id: socket.id,
         connected: true,
-        currentUsers
+        count: currentUsers
     });
 
     socket.on('disconnect', () => {
         console.log('User has disconnected.');
         currentUsers--;
+        io.emit('player', {
+            id: socket.id,
+            connected: false,
+            count: currentUsers
+        });
     });
 });
 
