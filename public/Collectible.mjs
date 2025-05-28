@@ -9,11 +9,6 @@ class Collectible {
         this.sizeY = 20;
     }
 
-    draw(context) {
-        context.fillStyle = 'gold';
-        context.fillRect(this.x, this.y, this.sizeX, this.sizeY);
-    }
-
 }
 
 /*
