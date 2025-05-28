@@ -5,11 +5,13 @@ class Collectible {
         this.y = y;
         this.value = value;
         this.id = id;
+        this.sizeX = 10;
+        this.sizeY = 10;
     }
 
     draw(context) {
         context.fillStyle = 'gold';
-        context.fillRect(this.x, this.y, 10, 10);
+        context.fillRect(this.x, this.y, this.sizeX, this.sizeY);
     }
 
 }

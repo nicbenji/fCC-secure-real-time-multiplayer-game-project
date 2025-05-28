@@ -17,6 +17,7 @@ socket.on('player', (data) => {
     window.requestAnimationFrame(gameLoop);
 });
 
+// TODO: Remove collectible from canvas
 function gameLoop() {
     context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 

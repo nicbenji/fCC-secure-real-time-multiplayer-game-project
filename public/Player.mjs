@@ -5,6 +5,8 @@ class Player {
         this.y = y;
         this.score = score;
         this.id = id;
+        this.sizeX = 30;
+        this.sizeY = 30;
     }
 
     movePlayer(dir, speed) {
@@ -34,9 +36,13 @@ class Player {
     }
 
     collision(item) {
-        if (item.x === this.x && item.y === this.y) {
-            // TODO: Remove collectible from canvas
-            // Increase player score
+        const isOffItem =
+            this.x > item.x + item.sizeX ||
+            this.x + this.sizeX < item.x ||
+            this.y > item.y + item.sizeY ||
+            this.y + this.sizeY < item.y;
+        if (!isOffItem) {
+            this.score += item.score;
             return true;
         }
     }
@@ -47,7 +53,7 @@ class Player {
 
     draw(context) {
         context.fillStyle = 'cyan';
-        context.fillRect(this.x, this.y, 30, 30);
+        context.fillRect(this.x, this.y, this.sizeX, this.sizeY);
     }
 }
 
