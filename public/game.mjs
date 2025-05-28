@@ -4,12 +4,18 @@ import Collectible from './Collectible.mjs';
 const socket = io();
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
+const playerImg = new Image();
+playerImg.src = '../public/Player.png';
+const enemyImg = new Image();
+enemyImg.src = '../public/Enemy.png';
+const candyImg = new Image();
+candyImg.src = '../public/Candy.png';
 
 let player, candy;
 let running = false;
 
 socket.on('player', (data) => {
-    if (!running) {
+    if (!running && playerImg.complete && enemyImg.complete && candyImg.complete) {
         player = generateRandomPlayer(data.id);
         candy = generateRandomCandy(0, player);
 
@@ -31,16 +37,16 @@ socket.on('playerLeft', (data) => {
 function gameLoop() {
     context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-    const speed = 2;
+    const speed = 3;
     if (currentDir) {
         player.movePlayer(currentDir, speed);
     }
-    player.draw(context);
-    candy.draw(context);
+    context.drawImage(playerImg, player.x, player.y, player.sizeX, player.sizeY);
+    context.drawImage(candyImg, candy.x, candy.y, candy.sizeX, candy.sizeY);
 
     if (player.collision(candy)) {
         candy = generateRandomCandy(0, player);
-        candy.draw(context);
+        context.drawImage(candyImg, candy.x, candy.y, candy.sizeX, candy.sizeY);
         const playerInfo = {
             score: player.score,
             id: player.id

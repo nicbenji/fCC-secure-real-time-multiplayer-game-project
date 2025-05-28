@@ -5,8 +5,8 @@ class Collectible {
         this.y = y;
         this.value = value;
         this.id = id;
-        this.sizeX = 10;
-        this.sizeY = 10;
+        this.sizeX = 20;
+        this.sizeY = 20;
     }
 
     draw(context) {

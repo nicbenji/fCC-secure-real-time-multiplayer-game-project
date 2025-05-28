@@ -38,3 +38,9 @@ canvas {
     display: flex;
     flex-direction: column;
 }
+
+.footnote {
+    font-size: 11px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
