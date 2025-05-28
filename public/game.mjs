@@ -6,14 +6,18 @@ const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 
 let player, candy;
+let running = false;
 
 socket.on('player', (data) => {
-    player = generateRandomPlayer(data.id);
-    candy = generateRandomCandy(0, player);
+    if (!running) {
+        player = generateRandomPlayer(data.id);
+        candy = generateRandomCandy(0, player);
 
-    displayRank(data.scores);
+        displayRank(data.scores);
 
-    window.requestAnimationFrame(gameLoop);
+        window.requestAnimationFrame(gameLoop);
+        running = true;
+    }
 });
 
 socket.on('scores', (scores) => {
