@@ -57,6 +57,10 @@ class Player {
         return `Rank: ${players.length}/${players.length}`
     }
 
+    draw(context, img) {
+        context.drawImage(img, this.x, this.y, this.sizeX, this.sizeY);
+    }
+
 }
 
 export default Player;

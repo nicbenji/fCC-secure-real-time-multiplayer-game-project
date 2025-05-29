@@ -11,6 +11,7 @@ canvas {
     margin: auto;
     border: 5px solid #2c3eb2;
     border-radius: 3px;
+    background-color: #0a0a0a;
 }
 
 #header {

@@ -49,8 +49,9 @@ app.use(function(req, res, next) {
 
 // Server socket
 let scores = [];
+let candy;
 io.on('connection', (socket) => {
-    console.log('A user has connected' + socket.id);
+    console.log('A user has connected ' + socket.id);
     scores = scores.filter(p => p.id !== socket.id);
     scores.push({ score: 0, id: socket.id });
     io.emit('player', {

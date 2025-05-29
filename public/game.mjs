@@ -41,12 +41,12 @@ function gameLoop() {
     if (currentDir) {
         player.movePlayer(currentDir, speed);
     }
-    context.drawImage(playerImg, player.x, player.y, player.sizeX, player.sizeY);
-    context.drawImage(candyImg, candy.x, candy.y, candy.sizeX, candy.sizeY);
+    player.draw(context, playerImg);
+    candy.draw(context, candyImg);
 
     if (player.collision(candy)) {
         candy = generateRandomCandy(0, player);
-        context.drawImage(candyImg, candy.x, candy.y, candy.sizeX, candy.sizeY);
+        candy.draw(context, candyImg);
         const playerInfo = {
             score: player.score,
             id: player.id
@@ -106,8 +106,7 @@ function generateRandomPlayer(id, score = 0) {
     const playerX = randomInt(0, 610);
     const playerY = randomInt(0, 450);
 
-    const randomPlayer = new Player({ x: playerX, y: playerY, score, id });
-    return randomPlayer;
+    return new Player({ x: playerX, y: playerY, score, id });
 }
 
 function randomInt(minLength, maxLength) {
