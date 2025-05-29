@@ -12,22 +12,50 @@ const candyImg = new Image();
 candyImg.src = '/public/Candy.png';
 
 let currentPlayer, currentCandy;
+let currentPlayers = {};
 let running = false;
 
-socket.on('gameState', (gameState) => {
+socket.on('gameState', ({ players, candy, playerId }) => {
+    currentPlayers = getCurrentPlayers(players);
     if (!running) {
-        currentCandy = getNewCandy(gameState);
-        currentPlayer = getNewPlayer(gameState);
+        currentCandy = getNewCandy(candy);
+        currentPlayer = currentPlayers[playerId];
 
-        displayRank(gameState.players);
+        displayRank(players);
 
         window.requestAnimationFrame(gameLoop);
         running = true;
     }
 });
 
-socket.on('playerLeft', (data) => {
-    displayRank(data.players);
+socket.on('positions', (players) => {
+    for (const id in players) {
+        if (currentPlayers[id]) {
+            currentPlayers[id].x = players[id].x;
+            currentPlayers[id].y = players[id].y;
+        }
+    }
+});
+
+socket.on('scores', ({ players, candy }) => {
+    const player = players[currentPlayer.id];
+    if (player) {
+        currentPlayer.score = player.score;
+        displayRank(players);
+    }
+    if (candy) {
+        currentCandy = new Collectible({
+            x: candy.x,
+            y: candy.y,
+            value: candy.value,
+            id: candy.id
+        });
+    }
+});
+
+socket.on('playerLeft', ({ players, id }) => {
+    delete currentPlayers[id];
+    displayRank(players);
 });
 
 function gameLoop() {
@@ -45,7 +73,11 @@ function gameLoop() {
         });
     }
 
-    currentPlayer.draw(context, playerImg);
+    for (const id in currentPlayers) {
+        const player = currentPlayers[id];
+        const img = (id === currentPlayer.id) ? playerImg : enemyImg;
+        player.draw(context, img);
+    }
     currentCandy.draw(context, candyImg);
 
     if (currentPlayer.collision(currentCandy)) {
@@ -53,44 +85,31 @@ function gameLoop() {
             id: currentPlayer.id,
             value: currentCandy.value
         });
-        socket.on('scores', ({ players, candy }) => {
-            const player = players[currentPlayer.id];
-            if (player) {
-                currentPlayer.score = player.score;
-                displayRank(players);
-            }
-            if (candy) {
-                currentCandy = new Collectible({
-                    x: candy.x,
-                    y: candy.y,
-                    value: candy.value,
-                    id: candy.id
-                });
-                currentCandy.draw(context, candyImg);
-            }
-        });
     }
 
     window.requestAnimationFrame(gameLoop);
 }
 
-function getNewPlayer(gameState) {
-    const playerData = gameState.players[gameState.playerId];
-    return new Player({
-        x: playerData.x,
-        y: playerData.y,
-        score: playerData.score,
-        id: playerData.id
-    });
+function getCurrentPlayers(players) {
+    const playerMap = {};
+    for (const id in players) {
+        const player = players[id];
+        playerMap[id] = new Player({
+            x: player.x,
+            y: player.y,
+            score: player.score,
+            id: player.id
+        });
+    }
+    return playerMap;
 }
 
-function getNewCandy(gameState) {
-    const candyData = gameState.candy;
+function getNewCandy(candy) {
     return new Collectible({
-        x: candyData.x,
-        y: candyData.y,
-        value: candyData.value,
-        id: candyData.id
+        x: candy.x,
+        y: candy.y,
+        value: candy.value,
+        id: candy.id
     });
 }
 
