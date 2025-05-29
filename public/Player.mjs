@@ -41,10 +41,7 @@ class Player {
             this.x + this.sizeX < item.x ||
             this.y > item.y + item.sizeY ||
             this.y + this.sizeY < item.y;
-        if (!playerisOffItem) {
-            this.score += item.value;
-            return true;
-        }
+        return !playerisOffItem;
     }
 
     calculateRank(arr) {
@@ -58,7 +55,12 @@ class Player {
     }
 
     draw(context, img) {
-        context.drawImage(img, this.x, this.y, this.sizeX, this.sizeY);
+        if (img.complete) {
+            context.drawImage(img, this.x, this.y, this.sizeX, this.sizeY);
+        } else {
+            context.fillStyle = 'cyan';
+            context.fillRect(this.x, this.y, this.sizeX, this.sizeY);
+        }
     }
 
 }

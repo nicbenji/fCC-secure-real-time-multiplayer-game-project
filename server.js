@@ -8,6 +8,7 @@ const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner.js');
 const helmet = require('helmet');
 const socket = require('socket.io-client/lib/socket.js');
+const serverSocket = require('./serverSocket.js');
 
 const app = express();
 const http = require('http').createServer(app);
@@ -40,47 +41,13 @@ app.route('/')
 //For FCC testing purposes
 fccTestingRoutes(app);
 
+serverSocket(io);
+
 // 404 Not Found Middleware
 app.use(function(req, res, next) {
     res.status(404)
         .type('text')
         .send('Not Found');
-});
-
-// Server socket
-let scores = [];
-let candy;
-io.on('connection', (socket) => {
-    console.log('A user has connected ' + socket.id);
-    scores = scores.filter(p => p.id !== socket.id);
-    scores.push({ score: 0, id: socket.id });
-    io.emit('player', {
-        id: socket.id,
-        scores
-    });
-
-    socket.on('score', (player) => {
-        const idx = scores.findIndex((p) => p.id === player.id);
-        if (idx === -1) {
-            scores.push(player);
-        } else {
-            scores[idx] = player;
-        }
-        io.emit('scores', scores);
-        console.log(scores);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('User has disconnected.');
-        const idx = scores.findIndex((player) => player.id === socket.id);
-        if (idx !== -1) {
-            scores.splice(idx, 1);
-        }
-        io.emit('playerLeft', {
-            id: socket.id,
-            scores
-        });
-    });
 });
 
 const portNum = process.env.PORT || 3000;

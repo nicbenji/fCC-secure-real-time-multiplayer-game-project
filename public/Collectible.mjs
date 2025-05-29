@@ -10,9 +10,13 @@ class Collectible {
     }
 
     draw(context, img) {
-        context.drawImage(img, this.x, this.y, this.sizeX, this.sizeY);
+        if (img.complete) {
+            context.drawImage(img, this.x, this.y, this.sizeX, this.sizeY);
+        } else {
+            context.fillStyle = 'gold';
+            context.fillRect(this.x, this.y, this.sizeX, this.sizeY);
+        }
     }
-
 }
 
 /*
